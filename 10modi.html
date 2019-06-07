@@ -1,0 +1,113 @@
+<html>
+<head>
+<style>
+.code {background: lightgrey; font-family: courier}
+</style>
+</head>
+<body>
+<script>
+xx = i => document.getElementById(i + "r").textContent = eval(document.getElementById(i).textContent);
+</script>
+<h1>10 modi non identici per definire e chiamare una funzione in Javascript</h1>
+<p><em>bozza, LM, agosto 2018</em>
+<br />
+La base della programmazione funzionale (FP) è il concetto di funzione. In un linguaggio che supporta la FP, come JS, ci possono essere modi molteplici per definire e poi eseguire una funzione. Un'esplorazione di (alcuni di) questi modi introduce operativamente ad alcune caratteristiche della FP. <br />(i testi con il codice sono editabili: si può sperimentare...)</p>
+
+<h3>1. Modo tradizionale</h3>
+<blockquote id="m1" class="code" contenteditable="true">
+function med1(a,b) { return (a+b)/2 }<br /> med1(2,3)
+</blockquote>
+<p><button onclick="xx('m1')">Run</button> <span id="m1r"></span></p>
+<p>E' il nostro punto di partenza: una funzione è definita indicandone il nome e gli argomenti e quindi specificando come a partire dagli argomenti deve essere calcolato il valore da restituire. Una volta definita, la funzione è eseguita chiamandola per nome e passando dei valori.</p>
+
+<hr />
+
+<h3>2. Modo tradizionale con chiamata inline</h3>
+<blockquote id="m2" class="code" contenteditable="true">
+(function med2(a,b) { return (a+b)/2 })(3,4)
+</blockquote>
+<p><button onclick="xx('m2')">Run</button> <span id="m2r"></span></p>
+<p>Richiudendo tra parentesi la definizione della funzione la si trasforma in un'espressione, che può essere dunque chiamata direttamente, passando dei valori per gli argomenti.');</p>
+
+<hr />
+
+<h3>3. Funzione anonima (lambda)</h3>
+<blockquote id="m3" class="code" contenteditable="true">
+med3 = function(a,b) { return (a+b)/2 };<br /> med3(4,5)
+</blockquote>
+<p><button onclick="xx('m3')">Run</button> <span id="m3r"></span></p>
+<p>Una funzione può essere definita senza specificarne il nome, secondo la logica del lambda calcolo. Per poter eseguire la funzione, la sua definizione è assegnata a una variabile, senza specificarne gli argomenti: tale variabile contiene dunque non un valore ma appunto una funzione, e come tale è usata per eseguire la funzione stessa.</p>
+
+<hr />
+
+<h3>4. Lambda inline</h3>
+<blockquote id="m4" class="code" contenteditable="true">
+(function(a,b) { return (a+b)/2 })(5,6)
+</blockquote>
+<p><button onclick="xx('m4')">Run</button> <span id="m4r"></span></p>
+<p>Se la funzione deve essere eseguita una sola volta non c'è bisogno di darle un nome: può essere eseguita inline come funzione anonima.</p>
+
+<hr />
+
+<h3>5. Lambda mediante "funzione freccia"</h3>
+<blockquote id="m5" class="code" contenteditable="true">
+med5 = (a,b) =&gt; (a+b)/2;<br /> med5(6,7)
+</blockquote>
+<p><button onclick="xx('m5')">Run</button> <span id="m5r"></span></p>
+<p>Alternativamente al modo 1 ma più sinteticamente, una funzione può essere definita mediante una "funzione freccia", che corrisponde più esplicitamente al sintassi del lambda calcolo. Come nel modo 3, la definizione della funzione è assegnata a una variabile.</p>
+
+<hr />
+
+<h3>6. Lambda mediante "funzione freccia" inline</h3>
+<blockquote id="m6" class="code" contenteditable="true">
+((a,b) =&gt; (a+b)/2)(7,8)
+</blockquote>
+<p><button onclick="xx('m6')">Run</button> <span id="m6r"></span></p>
+<p>Esattamente come i modi 2 e 4, ma in questo caso la sintassi &amp;egrave più sintetica grazie all'uso della "funzione freccia".</p>
+
+<hr />
+
+<h3>7. Currying con sintassi tradizionale</h3>
+<blockquote id="m7" class="code" contenteditable="true">
+function med7(a) { return b =&gt; (a+b)/2 }<br /> med7(8)(9)
+</blockquote>
+<p><button onclick="xx('m7')">Run</button> <span id="m7r"></span></p>
+<p>Il principio del currying: una funzione a due argomenti modificata in una funzione parziale a un argomento e che restituisce la funzione di partenza.</p>
+
+<hr />
+
+<h3>8. Currying con "funzione freccia"</h3>
+<blockquote id="m8" class="code" contenteditable="true">
+med8 = a =&gt; b =&gt; (a+b)/2;<br /> med8(9)(10)
+</blockquote>
+<p><button onclick="xx('m8')">Run</button> <span id="m8r"></span></p>
+<p>Una volta che si sceglie si definire una funzione curried, è evidentemente più semplice definirla mediante una "funzione freccia".</p>
+
+<hr />
+
+<h3>9. Currying lambda con "funzione freccia" inline</h3>
+<blockquote id="m9" class="code" contenteditable="true">
+(a =&gt; b =&gt; (a+b)/2)(10)(11)
+</blockquote>
+<p><button onclick="xx('m9')">Run</button> <span id="m9r"></span></p>
+<p>Non è altro che la funzione curried del modo 6.</p>
+
+<hr />
+
+<h3>10. Currying di una funzione definita in modo tradizionale</h3>
+<blockquote id="m10" class="code" contenteditable="true">
+function med(a,b) { return (a+b)/2; }<br /> function curry2(f) { return x =&gt; y =&gt; f(x,y); }<br /> med10 = curry2(med);<br /> med10(11)(12);
+</blockquote>
+<p><button onclick="xx('m10')">Run</button> <span id="m10r"></span></p>
+<p>Data una funzione definita in modo tradizionale, se ne può costruire una versione curried.</p>
+
+<hr />
+<p><strong>Una sintesi.</strong>
+<br />I primi 9 modi (il decimo è una variazione) possono essere classificati così:
+<br />-- definizione ed esecuzione separate (1, 3, 5, 7, 8) o non (2, 4, 6, 9);
+<br />-- funzione definita con nome (1, 2, 7) o anonima (lambda) (3, 4, 5, 6, 8, 9);
+<br />-- funzione con sintassi tradizionale (1, 2, 3, 4, 7) o definita mediante "funzione freccia" (5, 6, 8, 9);
+<br />-- funzione a struttura tradizionale (1, 2, 3, 4, 5, 6) o curried (7, 8, 9).</p>
+
+</body>
+</html>
